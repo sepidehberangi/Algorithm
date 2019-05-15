@@ -9,46 +9,49 @@ public class DijkstraPathFinder implements PathFinder
 {
     private PathMap map;
     private static int coordinatesExplored;
-    private List<Coordinate> impassableCells;
 
     public DijkstraPathFinder(PathMap pathMap) {
         map = pathMap;
         coordinatesExplored = 0;
-        impassableCells = new ArrayList<Coordinate>();
     } // end of DijkstraPathFinder()
 
 
 
     @Override
     public List<Coordinate> findPath() {
-        // You can replace this with your favourite list, but note it must be a
-        // list type
         Queue<Coordinate> queue = new LinkedList<Coordinate>();
+
         List<Coordinate> originCells = map.originCells;
         List<Coordinate> destCells = map.destCells;
         List<Coordinate> visitedCells = new ArrayList<Coordinate>();
+
         Coordinate origin = originCells.get(0);
         Coordinate dest = destCells.get(0);
+
         List<Coordinate> path = new ArrayList<Coordinate>();
 
+        // Add the origin cell to the queue
         queue.add(origin);
 
+        // Explore all possible cells queued
         while (queue.size() != 0) {
           Coordinate location = queue.remove();
-          int distance = 1;
           Iterable<Coordinate> adjacent = getNeighbours(location);
           Iterator<Coordinate> iterator = adjacent.iterator();
 
-          if (location == dest) {
-            break;
+          // Stop once we have reached the destination
+          if (location.getRow() == dest.getRow() && location.getColumn() == dest.getColumn()) {
+              path.add(location);
+              break;
           }
 
+          // Visit the next item in the queue
           visitedCells.add(location);
           path.add(location);
           coordinatesExplored++;
 
+          // If there are unexplored neighbours add them to the queue
           while (iterator.hasNext()) {
-              distance++;
               Coordinate nextCell = iterator.next();
               if (!visitedCells.contains(nextCell) && !queue.contains(nextCell)) {
                   queue.add(nextCell);
@@ -68,8 +71,6 @@ public class DijkstraPathFinder implements PathFinder
         if (row != map.sizeR - 1) {
             if (map.isPassable(row + 1, col)) {
                 neighbours.add(new Coordinate(row + 1, col, false));
-            } else {
-                impassableCells.add(new Coordinate(row + 1, col, true));
             }
         }
 
@@ -77,8 +78,6 @@ public class DijkstraPathFinder implements PathFinder
         if (row != 0) {
             if (map.isPassable(row - 1, col)) {
                 neighbours.add(new Coordinate(row - 1, col, false));
-            } else {
-                impassableCells.add(new Coordinate(row - 1, col, true));
             }
         }
 
@@ -86,8 +85,6 @@ public class DijkstraPathFinder implements PathFinder
         if (col != 0) {
             if (map.isPassable(row, col - 1)) {
                 neighbours.add(new Coordinate(row, col - 1, false));
-            } else {
-                impassableCells.add(new Coordinate(row, col - 1, true));
             }
         }
 
@@ -95,8 +92,6 @@ public class DijkstraPathFinder implements PathFinder
         if (col != map.sizeC - 1) {
             if (map.isPassable(row, col + 1)) {
                 neighbours.add(new Coordinate(row, col + 1, false));
-            } else {
-                impassableCells.add(new Coordinate(row, col + 1, true));
             }
         }
 
