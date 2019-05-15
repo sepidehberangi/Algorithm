@@ -8,7 +8,7 @@ import java.util.*;
  * <p>
  * Class representing a coordinate.
  */
-public class Coordinate {
+public class Coordinate implements Comparable<Coordinate> {
     /**
      * row
      */
@@ -112,4 +112,11 @@ public class Coordinate {
     public String toString() {
         return "(" + r + "," + c + "), " + isImpassable + ", " + terrainCost;
     } // end of toString()
+
+    @Override
+    public int compareTo(Coordinate other) {
+        return Comparator.comparingInt(Coordinate::getRow)
+            .thenComparingInt(Coordinate::getColumn)
+            .compare(this, other);
+    }
 } // end of class Coordinate
