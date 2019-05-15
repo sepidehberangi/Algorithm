@@ -125,7 +125,7 @@ public class PathMap
         if (!isVisu)
             return;
 
-        StdDraw.setCanvasSize(900, 900);
+        StdDraw.setCanvasSize(500, 500);
         StdDraw.setXscale(-1, sizeR + 1);
         StdDraw.setYscale(-1, sizeC + 1);
         StdDraw.setFont();
