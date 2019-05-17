@@ -1,5 +1,6 @@
 package map;
 
+import pathFinder.TreeNode;
 import java.util.*;
 
 /**
@@ -28,6 +29,8 @@ public class Coordinate {
      * Terrain cost.
      */
     protected int terrainCost;
+
+    protected TreeNode<Coordinate> treeNode;
 
 
 
@@ -85,6 +88,14 @@ public class Coordinate {
     }
 
     public int getTerrainCost() { return terrainCost; }
+
+    public void setTreeNode(TreeNode<Coordinate> node) {
+        treeNode = node;
+    }
+
+    public TreeNode<Coordinate> getTreeNode() {
+        return treeNode;
+    }
 
 
     //
