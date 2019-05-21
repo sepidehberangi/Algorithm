@@ -90,27 +90,28 @@ public class DijkstraPathFinder implements PathFinder
 
     public List<Coordinate> getNeighbours(Coordinate origin) {
         List<Coordinate> neighbours = new ArrayList<Coordinate>();
+        Coordinate[][] allCells = map.cells;
         int row = origin.getRow();
         int col = origin.getColumn();
 
         // Check if we can go up
         if (row != map.sizeR - 1 && map.isPassable(row + 1, col)) {
-            neighbours.add(new Coordinate(row + 1, col, false));
+            neighbours.add(allCells[row + 1][col]);
         }
 
         // Check if we can go down
         if (row != 0 && map.isPassable(row - 1, col)) {
-            neighbours.add(new Coordinate(row - 1, col, false));
+            neighbours.add(allCells[row - 1][col]);
         }
 
         // Check if we can go left
         if (col != 0 && map.isPassable(row, col - 1)) {
-            neighbours.add(new Coordinate(row, col - 1, false));
+            neighbours.add(allCells[row][col - 1]);
         }
 
         // Check if we can go right
         if (col != map.sizeC - 1 && map.isPassable(row, col + 1)) {
-            neighbours.add(new Coordinate(row, col + 1, false));
+            neighbours.add(allCells[row][col + 1]);
         }
 
         return neighbours;
