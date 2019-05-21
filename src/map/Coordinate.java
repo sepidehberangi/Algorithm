@@ -143,9 +143,9 @@ public class Coordinate implements Comparable<Coordinate> {
     // Allow Coordinate objects to be compared by their terrain cost in a priority queue
     @Override
     public int compareTo(Coordinate other) {
-        if (this.terrainCost == other.terrainCost) {
+        if (this.distance == other.distance) {
             return 0;
-        } else if (this.terrainCost > other.terrainCost){
+        } else if (this.distance > other.distance){
             return 1;
         } else {
             return -1;
