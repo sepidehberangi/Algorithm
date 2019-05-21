@@ -30,7 +30,15 @@ public class Coordinate implements Comparable<Coordinate> {
      */
     protected int terrainCost;
 
+    /**
+     * Tree of the path from the origin to this coordinate
+     */
     protected TreeNode<Coordinate> treeNode;
+
+    /**
+     * Distance from the source coordinate to this coordinate
+     */
+    protected int distance;
 
 
 
@@ -97,6 +105,14 @@ public class Coordinate implements Comparable<Coordinate> {
         return treeNode;
     }
 
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
 
     //
     // Override equals(), hashCode() and toString()
@@ -124,6 +140,7 @@ public class Coordinate implements Comparable<Coordinate> {
         return "(" + r + "," + c + "), " + isImpassable + ", " + terrainCost;
     } // end of toString()
 
+    // Allow Coordinate objects to be compared by their terrain cost in a priority queue
     @Override
     public int compareTo(Coordinate other) {
         if (this.terrainCost == other.terrainCost) {
