@@ -32,6 +32,8 @@ public class DijkstraPathFinder implements PathFinder
         List<Coordinate> path = new ArrayList<Coordinate>();
         // Create a tree starting at the origin as the root node
         TreeNode<Coordinate> pathTree = new TreeNode<Coordinate>(origin);
+        // Set the origin coordinate's distance to 0
+        origin.setDistance(0);
         // Set the origin's tree node to the current one
         origin.setTreeNode(pathTree);
         // Store the resulting destination's tree so we can traverse it later
@@ -66,6 +68,8 @@ public class DijkstraPathFinder implements PathFinder
                     // Add the next coordinate as a child of the current tree node
                     TreeNode<Coordinate> newTree = new TreeNode<Coordinate>(nextCell);
                     currentTreeNode.addChild(newTree);
+                    // Set the next coordinate's distance to the last coordinate's distance plus terrain cost
+                    nextCell.setDistance(location.getDistance() + nextCell.getTerrainCost());
                     // Set the next coordinate's tree node to the current one
                     nextCell.setTreeNode(newTree);
                     priorityQueue.add(nextCell);
