@@ -9,7 +9,7 @@ import java.util.*;
  * <p>
  * Class representing a coordinate.
  */
-public class Coordinate {
+public class Coordinate implements Comparable<Coordinate> {
     /**
      * row
      */
@@ -123,5 +123,16 @@ public class Coordinate {
     public String toString() {
         return "(" + r + "," + c + "), " + isImpassable + ", " + terrainCost;
     } // end of toString()
+
+    @Override
+    public int compareTo(Coordinate other) {
+        if (this.terrainCost == other.terrainCost) {
+            return 0;
+        } else if (this.terrainCost > other.terrainCost){
+            return 1;
+        } else {
+            return -1;
+        }
+    }
 
 } // end of class Coordinate

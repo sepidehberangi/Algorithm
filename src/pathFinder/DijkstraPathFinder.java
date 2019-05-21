@@ -20,7 +20,7 @@ public class DijkstraPathFinder implements PathFinder
 
     @Override
     public List<Coordinate> findPath() {
-        Queue<Coordinate> queue = new LinkedList<Coordinate>();
+        PriorityQueue<Coordinate> priorityQueue = new PriorityQueue<Coordinate>();
 
         List<Coordinate> originCells = map.originCells;
         List<Coordinate> destCells = map.destCells;
@@ -38,12 +38,12 @@ public class DijkstraPathFinder implements PathFinder
         TreeNode<Coordinate> destTree = null;
 
         // Add the origin cell to the queue
-        queue.add(origin);
+        priorityQueue.add(origin);
 
 
         // Explore all possible cells queued
-        while (queue.size() != 0) {
-            Coordinate location = queue.remove();
+        while (priorityQueue.size() != 0) {
+            Coordinate location = priorityQueue.remove();
             Iterable<Coordinate> adjacent = getNeighbours(location);
             Iterator<Coordinate> iterator = adjacent.iterator();
             // Get the current coordinate's tree node
@@ -62,13 +62,13 @@ public class DijkstraPathFinder implements PathFinder
             // If there are unexplored neighbours add them to the queue
             while (iterator.hasNext()) {
                 Coordinate nextCell = iterator.next();
-                if (!visitedCells.contains(nextCell) && !queue.contains(nextCell)) {
+                if (!visitedCells.contains(nextCell) && !priorityQueue.contains(nextCell)) {
                     // Add the next coordinate as a child of the current tree node
                     TreeNode<Coordinate> newTree = new TreeNode<Coordinate>(nextCell);
                     currentTreeNode.addChild(newTree);
                     // Set the next coordinate's tree node to the current one
                     nextCell.setTreeNode(newTree);
-                    queue.add(nextCell);
+                    priorityQueue.add(nextCell);
                 }
             }
         }
