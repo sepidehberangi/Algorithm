@@ -20,14 +20,39 @@ public class DijkstraPathFinder implements PathFinder
 
     @Override
     public List<Coordinate> findPath() {
-        PriorityQueue<Coordinate> priorityQueue = new PriorityQueue<Coordinate>();
-
         List<Coordinate> originCells = map.originCells;
         List<Coordinate> destCells = map.destCells;
-        List<Coordinate> visitedCells = new ArrayList<Coordinate>();
 
-        Coordinate origin = originCells.get(0);
-        Coordinate dest = destCells.get(0);
+        // Set the shortest path to the first path to begin with
+        List<Coordinate> shortestPath = new ArrayList<Coordinate>();
+        int shortestCost = 0;
+
+        for (int i = 0; i < originCells.size(); i++) {
+            for (int j = 0; j < destCells.size(); j++) {
+                List<Coordinate> path = getShortestPath(originCells.get(i), destCells.get(j));
+                int pathCost = getPathCost(path);
+
+                if (shortestPath.isEmpty()) {
+                    shortestPath = path;
+                    shortestCost = pathCost;
+                }
+
+                if (pathCost < shortestCost) {
+                    shortestPath = path;
+                    shortestCost = pathCost;
+                }
+            }
+        }
+
+        return shortestPath;
+    } // end of findPath()
+
+    /**
+    * Returns the shortest path from an origin Coordinate to a destination Coordinate
+    */
+    public List<Coordinate> getShortestPath(Coordinate origin, Coordinate dest) {
+        PriorityQueue<Coordinate> priorityQueue = new PriorityQueue<Coordinate>();
+        List<Coordinate> visitedCells = new ArrayList<Coordinate>();
 
         List<Coordinate> path = new ArrayList<Coordinate>();
         // Create a tree starting at the origin as the root node
@@ -86,7 +111,11 @@ public class DijkstraPathFinder implements PathFinder
 
         Collections.reverse(path);
         return path;
-    } // end of findPath()
+    }
+
+    public int getPathCost(List<Coordinate> path) {
+        return path.get(path.size() - 1).getDistance();
+    }
 
     public List<Coordinate> getNeighbours(Coordinate origin) {
         List<Coordinate> neighbours = new ArrayList<Coordinate>();
