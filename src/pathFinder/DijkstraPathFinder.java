@@ -22,6 +22,7 @@ public class DijkstraPathFinder implements PathFinder
     public List<Coordinate> findPath() {
         List<Coordinate> originCells = map.originCells;
         List<Coordinate> destCells = map.destCells;
+        List<Coordinate> waypoints = map.waypointCells;
 
         // Set the shortest path to the first path to begin with
         List<Coordinate> shortestPath = new ArrayList<Coordinate>();
@@ -29,7 +30,7 @@ public class DijkstraPathFinder implements PathFinder
 
         for (int i = 0; i < originCells.size(); i++) {
             for (int j = 0; j < destCells.size(); j++) {
-                List<Coordinate> path = getShortestPath(originCells.get(i), destCells.get(j));
+                List<Coordinate> path = getWaypointPath(originCells.get(i), destCells.get(j), waypoints);
                 int pathCost = getPathCost(path);
 
                 if (shortestPath.isEmpty()) {
@@ -46,6 +47,30 @@ public class DijkstraPathFinder implements PathFinder
 
         return shortestPath;
     } // end of findPath()
+
+    /**
+    * Checks if there are any waypoints, and joins the subpaths from origin to waypoints to destination
+    */
+    public List<Coordinate> getWaypointPath(Coordinate origin, Coordinate dest, List<Coordinate> waypoints) {
+        if (waypoints.isEmpty()) {
+            return getShortestPath(origin, dest);
+        }
+
+        List<Coordinate> originPath = getShortestPath(origin, waypoints.get(0));
+        List<Coordinate> waypointPath = new ArrayList<Coordinate>();
+
+        if (waypoints.size() > 1) {
+            for (int i = 0; i < waypoints.size() - 1; i++) {
+                waypointPath.addAll(getShortestPath(waypoints.get(i), waypoints.get(i + 1)));
+            }
+        }
+
+        List<Coordinate> destPath = getShortestPath(waypoints.get(waypoints.size() - 1), dest);
+
+        originPath.addAll(waypointPath);
+        originPath.addAll(destPath);
+        return originPath;
+    }
 
     /**
     * Returns the shortest path from an origin Coordinate to a destination Coordinate
